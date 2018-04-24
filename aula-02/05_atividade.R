@@ -11,11 +11,13 @@ load("aula-02/data/dados_exercicio.RData")
 ## Dica 2: Na primeira aula vimos uma função do RStudio que permite visualizar o conteúdo de uma variável, mas neste caso 
 ##         quero ver uma saída na Console.
 ### # ####
-
+str(acessos_alunos)
 
 
 ### 2 ###
 ## Quantos elementos a variável acessos_alunos possui? Utilize uma função do R que retorna o tamanho da variável.
+length(acessos_alunos)
+
 
 ## Dica: Vimos um exemplo no mesmo material sobre estruturas de dados
 ### # ###
@@ -32,6 +34,7 @@ load("aula-02/data/dados_exercicio.RData")
 ### # ###
 
 
+#alu0811237
 
 ### 4 ###
 ## A operação abaixo cria um vetor com todas as quantidades de acessos por aluno.

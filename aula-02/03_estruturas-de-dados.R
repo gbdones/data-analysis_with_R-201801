@@ -48,6 +48,8 @@ if(is.atomic(answer)) print("É atômico.")
 if(is.numeric(answer)) print("É numérico")
 if(length(answer) == 1) print("Tamanho 1") 
 
+length(init_fibonacci)
+
 #' 
 #' Os elementos de um vetor podem ser acessados através do índice, sempre lembrando que vetores em R são indexados a partir de 1.
 #' 
@@ -69,6 +71,10 @@ which(seq_10_from_2 > 6) # Índices
 
 # Exiba-os, por favor :: a indexação também pode ser feita através de vetores lógicos, retornando todas as posições indexadas por TRUE
 seq_10_from_2[seq_10_from_2 > 6]
+
+v2 <- c(1,11,5,14,6,8,7)
+
+v2[v2>6]
 
 # Os 3 primeiros elementos, pela sua posição
 seq_10_from_2[1:3]
@@ -92,7 +98,7 @@ seq(from=0, to=5, by=.5)
 #' 2. A possibilidade de aninhar outras estruturas
 #' 
 ## ------------------------------------------------------------------------
-resposta <- list(7, '*', 6, '=', list(42), c("quarenta", "e", "dois"))
+resposta <- list(7, '*', 6, '=', list(42, 53, 55), c("quarenta", "e", "dois"))
 
 # A função glimpse apresenta uma prévia do conteúdo da lista passada como parâmetro. A função `str` atende o mesmo propósito.
 dplyr::glimpse(resposta)
@@ -105,7 +111,8 @@ str(resposta)
 #' 
 ## ------------------------------------------------------------------------
 length(resposta)
-resposta[[3]]
+#resposta[[3]]
+resposta[2:4]
 
 #' 
 #' Tanto listas quanto vetores podem ser indexados por meio de um vetor de índices, cujo resultado é um outro vetor ou lista contendo os componentes das referidas posições:
@@ -119,7 +126,14 @@ resposta[2:4]
 named_list <- list(number=42, spelled="quarenta e dois")
 named_list$number
 named_list$spelled
-
+str(named_list)
 # Desta forma o conteúdo pode ser utilizado como uma variável
 named_list$number * 2
+value <- 42
+value * 2
+
+minhaLista <- list(nome = "Guaracy", idade=28)
+minhaLista$nome
+minhaLista$idade
+str(minhaLista)
 
