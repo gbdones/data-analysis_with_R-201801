@@ -33,6 +33,8 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
+minhaLista <- length(acessos_alunos)
+
 
 #alu0811237
 
