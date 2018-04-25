@@ -91,5 +91,5 @@ xor(TRUE, TRUE)                                            # OU exclusivo
 min(20:40)   # Mínimo de um vetor           
 max(20:40)   # Máximo de um vetor           
 range(20:40) # Mínimo e máximo de um vetor 
-sum(1:5)     # Soma dos valores de um vetor
+sum(1:2)     # Soma dos valores de um vetor
 

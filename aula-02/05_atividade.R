@@ -33,10 +33,7 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
-minhaLista <- length(acessos_alunos)
-
-
-#alu0811237
+paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == "alu0811237")],"realizou",acessos_alunos$alu0811237, "acessos")
 
 ### 4 ###
 ## A operação abaixo cria um vetor com todas as quantidades de acessos por aluno.
@@ -50,11 +47,21 @@ acessos <- unlist(acessos_alunos)
 ### # ###
 
 
+##### Variavel de comparacao entre o meu acesso e os demais
+diffAccesso <- acessos[which(names(acessos) == "alu0811237")] < acessos[which(names(acessos) != "alu0811237")]
+
+##### Busca somente os usuarios com mais acessos que eu
+maisAcessos <- which(diffAccesso == TRUE)
+maisAcessos
+
 
 ### 5 ###
 ## Combine todas as etapas acima em uma única chamada, sem a criação dos vetores auxiliares
 ### # ###
 
+##### BUSCA SOMENTE OS USUARIOS COM MAIS ACESSO QUE EU
+maisAcessosUnico <- which(acessos > acessos[which(names(acessos) == "alu0811237")])
+maisAcessosUnico
 
 
 ### 6 ###
@@ -77,7 +84,9 @@ acessos <- unlist(acessos_alunos)
 ## OBSERVAÇÃO :: Não avaliarei participação na forma do enunciado deste exercício. 
 ### # ###
 
-
+pontosSemAcesso <- (acessos > 0) 
+pontosMenos10vezes <- (pontosSemAcesso == TRUE && acessos < 10) + 1
+pontosIgualOuMais10vezes <- 
 
 ### 8 ###
 ## Visualização da quantidade de alunos com cada nota de participação. Esta não é uma atividade, apenas uma ilustração de como
