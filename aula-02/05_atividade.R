@@ -23,7 +23,6 @@ length(acessos_alunos)
 ### # ###
 
 
-
 ### 3 ###
 ## Utilizando o seu código de aluno da Uniritter como nome de um valor da lista, imprima uma linha informando quantos acessos
 ## você fez. A linha deve ser impressa na Console, com um texto que diga o seu código de aluno e o valor conforme o seguinte exemplo:
@@ -33,11 +32,14 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
+#### Define a matricula 
 matricula <- "alu0811237"
-acessosAluno <- acessos_alunos[which(names(acessos_alunos) == matricula)]
-paste("O aluno ",matricula," realizou ",acessosAluno, " acessos ", sep="")
 
-#paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == "alu0811237")],"realizou",acessos_alunos$alu0811237, "acessos")
+#### Busca acessos do aluno
+acessosAluno <- acessos_alunos[which(names(acessos_alunos) == matricula)]
+
+#### Concatena informação de aluno e acessos
+paste("O aluno",matricula,"realizou",acessosAluno, "acessos")
 
 
 ### 4 ###
