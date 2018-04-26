@@ -33,7 +33,8 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
-paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == "alu0811237")],"realizou",acessos_alunos$alu0811237, "acessos")
+paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == matricula)],"realizou",acessos_alunos$alu0811237, "acessos")
+
 
 ### 4 ###
 ## A operação abaixo cria um vetor com todas as quantidades de acessos por aluno.
@@ -47,22 +48,23 @@ acessos <- unlist(acessos_alunos)
 ### # ###
 
 
-##### Variavel de comparacao entre o meu acesso e os demais
-diffAccesso <- acessos[which(names(acessos) == "alu0811237")] < acessos[which(names(acessos) != "alu0811237")]
+##### Variavel que contém somente o valor de acessos do usuário 
+acessoAluno <- acessos[["alu0811237"]]
 
-##### Busca somente os usuarios com mais acessos que eu
-maisAcessos <- which(diffAccesso == TRUE)
-maisAcessos
+##### Variavel de comparacao entre o usuário e os demais
+somenteMaiores <- acessos[acessos>acessoAluno]
+##### Imprime valores maiores
+somenteMaiores
 
 
 ### 5 ###
 ## Combine todas as etapas acima em uma única chamada, sem a criação dos vetores auxiliares
 ### # ###
 
-##### BUSCA SOMENTE OS USUARIOS COM MAIS ACESSO QUE EU
-maisAcessosUnico <- which(acessos > acessos[which(names(acessos) == "alu0811237")])
+##### Busca somente registros maiores que o usuario de forma unica
+maisAcessosUnico <- acessos[acessos>acessos["alu0811237"]]
+##### Imprime valores maiores
 maisAcessosUnico
-
 
 ### 6 ###
 ## Agora determine quantos colegas fizeram menos acessos que você. 
@@ -70,6 +72,9 @@ maisAcessosUnico
 
 ## Dica: Lembre que falamos sobre como o R faz conversões implícitas entre o tipo lógico e tipos numéricos
 ### # ###
+
+#### Imprime quantidade de acessos menores que o do usuario
+sum(acessos[acessos<acessos["alu0811237"]] < acessos["alu0811237"])
 
 
 
@@ -84,15 +89,20 @@ maisAcessosUnico
 ## OBSERVAÇÃO :: Não avaliarei participação na forma do enunciado deste exercício. 
 ### # ###
 
-pontosSemAcesso <- (acessos > 0) 
-pontosMenos10vezes <- (pontosSemAcesso == TRUE && acessos < 10) + 1
-pontosIgualOuMais10vezes <- 
+#### Cria cópia do vetor de acessos
+notas <- acessos
+
+#### Associa as notas com relação aos acessos
+notas[notas == 0] <- 0
+notas[notas > 0 & notas < 10 ] <- 1
+notas[notas >= 10] <- 2
+notas 
+
 
 ### 8 ###
 ## Visualização da quantidade de alunos com cada nota de participação. Esta não é uma atividade, apenas uma ilustração de como
 ## criar uma tabela com esta contagem
 table(notas)
-
 
 
 ### 9 ###
