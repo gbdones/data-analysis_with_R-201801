@@ -33,7 +33,11 @@ length(acessos_alunos)
 ## Dica 2: Vimos exemplos disto nos materiais dos tipos numéricos e das estruturas de dados.
 ### # ###
 
-paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == matricula)],"realizou",acessos_alunos$alu0811237, "acessos")
+matricula <- "alu0811237"
+acessosAluno <- acessos_alunos[which(names(acessos_alunos) == matricula)]
+paste("O aluno ",matricula," realizou ",acessosAluno, " acessos ", sep="")
+
+#paste("O aluno",names(acessos_alunos)[which(names(acessos_alunos) == "alu0811237")],"realizou",acessos_alunos$alu0811237, "acessos")
 
 
 ### 4 ###
@@ -49,7 +53,7 @@ acessos <- unlist(acessos_alunos)
 
 
 ##### Variavel que contém somente o valor de acessos do usuário 
-acessoAluno <- acessos[["alu0811237"]]
+acessoAluno <- acessos[[matricula]]
 
 ##### Variavel de comparacao entre o usuário e os demais
 somenteMaiores <- acessos[acessos>acessoAluno]
@@ -62,7 +66,8 @@ somenteMaiores
 ### # ###
 
 ##### Busca somente registros maiores que o usuario de forma unica
-maisAcessosUnico <- acessos[acessos>acessos["alu0811237"]]
+maisAcessosUnico <- acessos[acessos>acessos[matricula]]
+
 ##### Imprime valores maiores
 maisAcessosUnico
 
@@ -74,7 +79,7 @@ maisAcessosUnico
 ### # ###
 
 #### Imprime quantidade de acessos menores que o do usuario
-sum(acessos[acessos<acessos["alu0811237"]] < acessos["alu0811237"])
+sum(acessos[acessos<acessos[matricula]] < acessos[matricula])
 
 
 
