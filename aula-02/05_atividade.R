@@ -60,7 +60,7 @@ acessoAluno <- acessos[[matricula]]
 ##### Variavel de comparacao entre o usuário e os demais. Resulta  ao vetor somente os alunos com mais acessos
 somenteMaiores <- acessos[acessos>acessoAluno]
 ##### Imprime valores maiores
-somenteMaiores
+length(somenteMaiores)
 
 
 ### 5 ###
@@ -100,7 +100,7 @@ sum(acessos[acessos<acessos[matricula]] < acessos[matricula])
 notas <- acessos
 
 #### Associa as notas com relação aos acessos
-notas[notas == 0] <- 0
+notas[notas == 0] <- NA
 notas[notas > 0 & notas < 10 ] <- 1
 notas[notas >= 10] <- 2
 notas 
@@ -120,6 +120,22 @@ acessos_alunos_e_guest$guest <- NA
 
 ## Repita as atividades 4, 5, 6, e 7 utilizando o acessos_com_guest no lugar da lista acessos_alunos.
 ## Tome o devido cuidado de sempre criar variáveis com nomes diferentes das já utilizadas! 
+
+acessosGuest <- unlist(acessos_alunos_e_guest)
+
+
+#### Define a matricula do convidado
+matriculaConvidado <- "guest"
+
+##### Variavel que contém somente o valor de acessos do usuário 
+acessoConvidado <- acessosGuest[[matriculaConvidado]]
+
+##### Variavel de comparacao entre o usuário e os demais. Resulta  ao vetor somente os alunos com mais acessos
+somenteMaiores <- acessosGuest[acessosGuest>acessoConvidado]
+##### Imprime valores maiores
+length(somenteMaiores)
+
+
 
 
 
