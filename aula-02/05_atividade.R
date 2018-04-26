@@ -59,6 +59,7 @@ acessoAluno <- acessos[[matricula]]
 
 ##### Variavel de comparacao entre o usuário e os demais. Resulta  ao vetor somente os alunos com mais acessos
 somenteMaiores <- acessos[acessos>acessoAluno]
+
 ##### Imprime valores maiores
 length(somenteMaiores)
 
@@ -123,33 +124,50 @@ acessos_alunos_e_guest$guest <- NA
 
 acessosGuest <- unlist(acessos_alunos_e_guest)
 
-
-#### Define a matricula do convidado
-matriculaConvidado <- "guest"
-
 ##### Variavel que contém somente o valor de acessos do usuário 
-acessoConvidado <- acessosGuest[[matriculaConvidado]]
+qtdAcessos <- acessosGuest[[matricula]]
 
 ##### Variavel de comparacao entre o usuário e os demais. Resulta  ao vetor somente os alunos com mais acessos
-somenteMaiores <- acessosGuest[acessosGuest>acessoConvidado]
+somenteMaioresConvidado <- acessosGuest[acessosGuest>qtdAcessos]
+
 ##### Imprime valores maiores
-length(somenteMaiores)
+length(somenteMaioresConvidado)
 
+##### Retorna somente os alunos com mais acessos que o usuario
+maisAcessosUnicoConvidado <- acessosGuest[acessosGuest>acessosGuest[matricula]]
 
+##### Imprime valores maiores Unico
+length(maisAcessosUnicoConvidado)
 
+#### Imprime quantidade de acessos menores que o do usuario
+sum(acessosGuest[acessosGuest<acessosGuest[matricula]] < acessosGuest[matricula])
+
+#### Cria cópia do vetor de acessos
+notasGuest <- acessosGuest
+
+#### Associa as notas com relação aos acessos
+notasGuest[notasGuest == 0] <- NA
+notasGuest[notasGuest > 0 & notasGuest < 10 ] <- 1
+notasGuest[notasGuest >= 10] <- 2
+notasGuest 
 
 
 ### 10 ###
 ## Responda as seguintes perguntas:
 
-
 # 1. Houve modificação no número de alunos com mais e com menos acessos que você?
+#Sim. No caso de alunos com mais acessos, identifiquei que o NA foi considerado. 
+#Porém, quando apliquei o sum para calcular a quantidade que teve menos acessos a execução retornou NA. 
 
 # 2. Como você conclui que o R trata comparações (operações relacionais) entre valores numéricos e NA?
+#Parece que o R não consegue identificar em operações relacionais se os valores são maiores ou menores. 
 
 # 3. Qual o resultado do uso da função sum na presença de NA? O que você conclui sobre a operação de soma de todos os valores de
 #    um vetor na presença de NA?
-
+# O resultado foi NA, aparentemente o R não consegue lidar com a soma de valores NA em vetores.
 # 4. Execute o comando abaixo para ler a documentação da função sum e veja se há como modificar a chamada da função sum na presença
 #    de NAs. Teste os exemplos da página de help da função sum.
 help(sum)
+
+## RETORNO DO SUM APÓS O TRATAMENTO DE RETORNO "MISSING VALUES"
+sum(acessosGuest[acessosGuest<acessosGuest[matricula]] < acessosGuest[matricula],na.rm=TRUE)
