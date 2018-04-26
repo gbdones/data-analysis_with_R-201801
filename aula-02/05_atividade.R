@@ -57,7 +57,7 @@ acessos <- unlist(acessos_alunos)
 ##### Variavel que contém somente o valor de acessos do usuário 
 acessoAluno <- acessos[[matricula]]
 
-##### Variavel de comparacao entre o usuário e os demais
+##### Variavel de comparacao entre o usuário e os demais. Resulta  ao vetor somente os alunos com mais acessos
 somenteMaiores <- acessos[acessos>acessoAluno]
 ##### Imprime valores maiores
 somenteMaiores
