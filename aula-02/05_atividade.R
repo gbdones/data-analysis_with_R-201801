@@ -72,7 +72,7 @@ length(somenteMaiores)
 maisAcessosUnico <- acessos[acessos>acessos[matricula]]
 
 ##### Imprime valores maiores
-maisAcessosUnico
+length(maisAcessosUnico)
 
 ### 6 ###
 ## Agora determine quantos colegas fizeram menos acessos que você. 
@@ -104,6 +104,8 @@ notas <- acessos
 notas[notas == 0] <- NA
 notas[notas > 0 & notas < 10 ] <- 1
 notas[notas >= 10] <- 2
+
+#### IMPRIME NOTAS
 notas 
 
 
@@ -149,6 +151,8 @@ notasGuest <- acessosGuest
 notasGuest[notasGuest == 0] <- NA
 notasGuest[notasGuest > 0 & notasGuest < 10 ] <- 1
 notasGuest[notasGuest >= 10] <- 2
+
+#### Imprime Notas com Convidado
 notasGuest 
 
 
@@ -169,5 +173,5 @@ notasGuest
 #    de NAs. Teste os exemplos da página de help da função sum.
 help(sum)
 
-## RETORNO DO SUM APÓS O TRATAMENTO DE RETORNO "MISSING VALUES"
+## RETORNO DO SUM APÓS O TRATAMENTO DE RETORNO UTILIZANDO O NA.RM
 sum(acessosGuest[acessosGuest<acessosGuest[matricula]] < acessosGuest[matricula],na.rm=TRUE)
