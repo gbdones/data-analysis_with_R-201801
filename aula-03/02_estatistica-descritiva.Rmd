@@ -200,14 +200,25 @@ Crie um novo dataset contendo a média e a mediana do salário por UF. Adicione 
 ```{r}
 print("Atividade")
 
-## Código aqui
+#'Crie um novo dataset contendo a média e a mediana do salário por UF. 
+#'Adicione uma nova variável determinando, para cada UF, se a média é maior ou menor que a mediana. Ao final, exiba a quantidade de UFs onde a mediana foi maior que a média.
+
+subset_salarios %>%
+  group_by(UF_EXERCICIO) %>%
+  summarise(salario_medio = mean(REMUNERACAO_REAIS)
+            , mediana_salario = median(REMUNERACAO_REAIS)
+            , media_maior = salario_medio > mediana_salario) %>%
+  ungroup() %>%
+  count(media_maior) %>%
+  ungroup()
+
 ```
 
 __Atividade II__
 
 Qual sua justificativa para a quantidade de casos onde a mediana foi maior que a média? Dica: Observe o gráfico que mostra a média e a mediana. Há cauda longa? Em qual direção?
 
-``` SUA RESPOSTA AQUI ```
+`Existe uma cauda longa em virtude de altos salários. Com isso, a mediana não foi maior que a média`
 
 >> FIM DA ATIVIDADE
 
@@ -293,7 +304,8 @@ Verifique a validade deste teorema com os valores calculados.
 ```{r}
 print("Atividade")
 
-## Código aqui
+subset_salarios %>% 
+    mutate(desvio_padrao = sd(REMUNERACAO_REAIS))
 ```
 
 __Atividade II__

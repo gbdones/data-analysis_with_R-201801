@@ -49,6 +49,15 @@ subset_salarios <- read_csv("aula-04/data/201802_dados_salarios_servidores.csv.g
 
 head(subset_salarios, 20)
 
+ocorrencias_remuneracoes <- table(subset_salarios$REMUNERACAO_REAIS)
+
+set.seed(1234)
+valores_aleatorios_uniforme <- runif(n = 300, min = 1000, max = 5000)
+
+ocorrencias_valores_aleatorios <- table(valores_aleatorios_uniforme)
+
+max(ocorrencias_valores_aleatorios)
+
 #' 
 #' ## Medidas de Tendência Central
 #' 
