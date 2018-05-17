@@ -15,6 +15,14 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 ### # ####
 
 
+#DOLAR = 3.24
+cotacaoDolar = 3.24
+
+salarios %>%
+  mutate(REMUNERACAO_FINAL = REMUNERACAO_REAIS + (REMUNERACAO_DOLARES * cotacaoDolar)) %>%
+  filter(REMUNERACAO_FINAL > 900) -> salarios
+
+
 ### 2 ####
 ## 
 ## Neste dataset é possível identificar que alguns servidores estão lotados em órgãos diferentes do seu órgão de exercício.
@@ -25,6 +33,14 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 salarios %>% count(UF_EXERCICIO) %>% pull(UF_EXERCICIO) -> ufs # EXEMPLO
 ## 
 ### # ####
+salarios %>%
+  filter(ORGSUP_LOTACAO != ORGSUP_EXERCICIO) %>%
+  group_by(DESCRICAO_CARGO) %>%
+  summarize(qtdServidoresCargo = n()) %>%
+  ungroup() %>%
+  arrange(desc(qtdServidoresCargo)) %>%
+  head(5) %>%
+  pull(DESCRICAO_CARGO) -> cargos_diferente_lotacao
 
 
 ### 3 ####
@@ -49,3 +65,16 @@ salarios %>% filter(DESCRICAO_CARGO %in% c("MINISTRO DE PRIMEIRA CLASSE", "ANALI
 ## 
 ### # ####
 
+salarios %>% 
+  filter(DESCRICAO_CARGO %in% cargos_diferente_lotacao) %>% 
+  mutate(mesmoOrgao = if_else(ORGSUP_LOTACAO == ORGSUP_EXERCICIO,"TRUE","FALSE")) %>%
+  group_by(DESCRICAO_CARGO, mesmoOrgao) %>%
+  summarize(
+    mediaSalarial = mean(REMUNERACAO_FINAL),
+    desvioPadrao  = sd(REMUNERACAO_FINAL),
+    mediana       = median(REMUNERACAO_FINAL),
+    desvioAbsolutoMediana = median(abs(REMUNERACAO_FINAL - median(REMUNERACAO_FINAL))),
+    menorSalario = min(REMUNERACAO_FINAL),
+    maiorSalario = max(REMUNERACAO_FINAL)
+  ) %>%
+  View()
