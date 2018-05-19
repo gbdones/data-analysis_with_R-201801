@@ -23,7 +23,16 @@ salarios <- read_csv("aula-03/data/201802_dados_salarios_servidores.csv.gz")
 
 salarios %>%
   mutate(REMUNERACAO_FINAL = REMUNERACAO_REAIS + (REMUNERACAO_DOLARES * cotacaoDolar)) %>%
-  filter(REMUNERACAO_FINAL > 900) -> salarios
+  group_by(DESCRICAO_CARGO) %>%
+  summarize(qtdServidoresCargo = n()) %>%
+  ungroup() %>%
+  filter(qtdServidoresCargo > 200) %>%
+  group_by(DESCRICAO_CARGO) %>%
+  summarize(correlacao = cor(x = salarios$REMUNERACAO_FINAL, y = year(salarios$DATA_INGRESSO_ORGAO) - year(salarios$DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO)))
+
+
+
+
 
 
 
