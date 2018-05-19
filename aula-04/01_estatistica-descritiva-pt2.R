@@ -172,10 +172,14 @@ IQR(subset_salarios$REMUNERACAO_REAIS)
 #' 
 #' Qual a razão entre o IQR e o Desvio Absoluto da Mediana da variável REMUNERACAO_REAIS?
 #' 
+#' 
 ## ------------------------------------------------------------------------
 print("Atividade")
 
-## Código aqui
+dam_salario <- median( abs( subset_salarios$REMUNERACAO_REAIS - median ( subset_salarios$REMUNERACAO_REAIS )))
+iqr <- IQR(subset_salarios$REMUNERACAO_REAIS)
+
+(razao <- iqr /dam_salario)
 
 #' 
 #' __Atividade II__
@@ -186,7 +190,19 @@ print("Atividade")
 ## ------------------------------------------------------------------------
 print("Atividade")
 
-## Código aqui
+calcula_DAM <- function(param_Remuneracao) {
+  retorno_DAM <- median( abs( param_Remuneracao - median ( param_Remuneracao )))
+  return(retorno_DAM)
+}
+
+
+subset_salarios %>%
+  group_by(ano <- year(DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO)) %>%
+  summarize(desvio_Padrao = sd(REMUNERACAO_REAIS),
+            desvio_absoluto_mediana = calcula_DAM(REMUNERACAO_REAIS),
+            iqr =  IQR(REMUNERACAO_REAIS)
+            ) %>%
+  View()
 
 #' 
 #' >> FIM ATIVIDADE
@@ -246,7 +262,18 @@ cor(x = subset_salarios$REMUNERACAO_REAIS, y = 2018 - year( subset_salarios$DATA
 ## ------------------------------------------------------------------------
 print("Atividade")
 
-## Código aqui
+correlacao <- cor(x = subset_salarios$REMUNERACAO_REAIS, y = year(subset_salarios$DATA_INGRESSO_ORGAO) - year( subset_salarios$DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO ))
+
+positivo_ou_negativo <- if_else(correlacao > 0,"Positivo","Negativo")
+
+grau_correlacao <- if(abs(correlacao) >= 0.9){"Muito forte"
+}else if (abs(correlacao) >= 0.7){"FORTE"
+}else if (abs(correlacao) >= 0.5){"MODERADO"
+}else if (abs(correlacao) >= 0.3){"FRACO"
+}else if (abs(correlacao) >= 0){"DESPREZÍVEL"}
+  
+positivo_ou_negativo
+grau_correlacao
 
 #' 
 #' >> FIM ATIVIDADE

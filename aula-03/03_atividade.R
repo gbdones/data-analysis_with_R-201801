@@ -80,4 +80,4 @@ salarios %>%
   View()
 
 
-# 
+# Identifiquei que em alguns casos o desvio padrão é alto, o que caracteriza uma dispersão alta entre os valores, pois eles estão mais longe da média.
