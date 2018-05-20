@@ -262,15 +262,17 @@ cor(x = subset_salarios$REMUNERACAO_REAIS, y = 2018 - year( subset_salarios$DATA
 ## ------------------------------------------------------------------------
 print("Atividade")
 
-correlacao <- cor(x = subset_salarios$REMUNERACAO_REAIS, y = year(subset_salarios$DATA_INGRESSO_ORGAO) - year( subset_salarios$DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO ))
+correlacao <- cor(x = DATA_INGRESSO_ORGAO, subset_salarios$DATA_DIPLOMA_INGRESSO_SERVICOPUBLICO)
 
 positivo_ou_negativo <- if_else(correlacao > 0,"Positivo","Negativo")
 
-grau_correlacao <- if(abs(correlacao) >= 0.9){"Muito forte"
-}else if (abs(correlacao) >= 0.7){"FORTE"
-}else if (abs(correlacao) >= 0.5){"MODERADO"
-}else if (abs(correlacao) >= 0.3){"FRACO"
-}else if (abs(correlacao) >= 0){"DESPREZÍVEL"}
+grau_correlacao <- case_when(
+  abs(correlacao) >= 0.9 ~ "MUITO FORTE",
+  abs(correlacao) >= 0.7 ~ "FORTE",
+  abs(correlacao) >= 0.5 ~ "MODERADO",
+  abs(correlacao) >= 0.3 ~ "FRACO",
+  abs(correlacao) >= 0.0 ~ "DESPREZÍVEL"
+)
   
 positivo_ou_negativo
 grau_correlacao
