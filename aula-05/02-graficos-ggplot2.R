@@ -55,7 +55,7 @@ library(Hmisc)
 #' 
 ## ----echo=FALSE, message=FALSE, warning=FALSE----------------------------
 ### Carga dos dados de exemplo
-ted_talks <- read_csv("data/ted_main.csv.gz") %>%
+ted_talks <- read_csv("aula-05/data/ted_main.csv.gz") %>%
   mutate( duration  = duration(duration, units = "seconds")
         , film_date = as_datetime(film_date) %>% as_date()
         , published_date = as_datetime(published_date)) %>%
