@@ -68,14 +68,12 @@ ted %>%
 # Descarte, do data frame de apresentações do TED Talks, aqueles cujo ano de filmagem tiver quantidade de apresentações menor ou igual à quantidade do quarto quantil.
 quarto_quantil = c(quantile(ted_Apresentacoes$cont_Apresentacoes,  probs = seq(0,1,0.1)))[5]
 
-ted_Apresentacoes %>%
-  #group_by(year_film_date) %>%
-  filter(cont_Apresentacoes > quarto_quantil) %>%
+ted %>%
+  group_by(year(film_date)) %>%
+  mutate(cont_apresentacoes = n()) %>%
+  ungroup() %>%
+  filter(cont_apresentacoes > quarto_quantil) %>%
   View()
-  
-  
-#ler o dataset original contar novamente e depois filtrar
-  
 
 
 # Verifique novamente o resumo dos dados do dataframe
