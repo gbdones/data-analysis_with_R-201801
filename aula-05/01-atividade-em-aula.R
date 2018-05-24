@@ -72,27 +72,36 @@ ted %>%
   group_by(year(film_date)) %>%
   mutate(cont_apresentacoes = n()) %>%
   ungroup() %>%
-  filter(cont_apresentacoes > quarto_quantil) %>%
+  filter(cont_apresentacoes > quarto_quantil) -> ted_maiorQuartil
+
+ted_maiorQuartil %>%
   View()
 
 
 # Verifique novamente o resumo dos dados do dataframe
 
-
+summary(ted_maiorQuartil)
 
 
 # Verifique os 10 registros com maior duração.
-
+ted_maiorQuartil %>%
+  arrange(desc(duration)) %>%
+  head(10) %>%
+  View()
 
 
 
 # Existem apresentações com duração maior que 3 desvios padrão acima da média? Liste elas
+tresDesvios = as.duration(mean(ted_maiorQuartil$duration) + sd(ted_maiorQuartil$duration)*3)
 
-
+ted_maiorQuartil %>%
+  filter(as.duration(duration) > tresDesvios) %>%
+  View()
 
 
 # Calcule os 4 quartis e o IQR da duração das apresentações. Liste as apresentações cuja duração supera 1.5 * o IQR + o terceiro quartil
-
+ted_maiorQuartil %>%
+  
 
 
 
