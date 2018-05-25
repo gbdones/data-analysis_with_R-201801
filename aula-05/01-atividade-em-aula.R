@@ -100,20 +100,39 @@ ted_maiorQuartil %>%
 
 
 # Calcule os 4 quartis e o IQR da duração das apresentações. Liste as apresentações cuja duração supera 1.5 * o IQR + o terceiro quartil
-ted_maiorQuartil %>%
-  
+duracao_quartil = as.duration(quantile(as.integer(ted_maiorQuartil$duration), probs = seq(0, 1, 0.25)))
 
-
+ted %>%
+  filter(duration > 1.5 * IQR(ted_maiorQuartil$duration) + duracao_quartil[4]) %>%
+  View()
 
 # Visualize os 10 quantis da quantidade de visualizações
-
-
+quantile(ted_maiorQuartil$views, probs = seq(0, 1, 0.1))
 
 
 # Compare as seguintes estatísticas descritivas da quantidade de visualizações:
 #   * Média e Mediana. Qual é maior?
+summary(ted_maiorQuartil$views)
+
+# Resposta: média
+
 #   * Desvio Absoluto da Mediana e Desvio Padrão. Qual é maior?
+
+median(abs(ted_maiorQuartil$views - median(ted_maiorQuartil$views)))
+
+sd(ted_maiorQuartil$views)
+
+#Resposta DAM é maior
+
+
 #   * Desvio Absoluto da Mediana e IQR. Quantas vezes o IQR é maior que o Desvio Absoluto da Mediana?
+mediana = median(abs(ted_maiorQuartil$views - median(ted_maiorQuartil$views)))
+
+qtd_Vezes = IQR(ted_maiorQuartil$views) / mediana
+
+# Resposta: 2.19
+
+
 #   * Com base na média e na mediana, e na razão entre o IQR e o Desvio Absoluto da Mediana, 
 #     você conclui que as quantidades de visualização estão distribuidas de forma simétrica em torno da média?
 
@@ -124,20 +143,76 @@ ted_maiorQuartil %>%
 #     * 10% de vídeos com maior número de visualizações
 #     * 10% de vídeos com menor número de visualizações
 
+menores_10 <- ted_maiorQuartil %>%
+  arrange(views) %>%
+  head(count(ted_maiorQuartil) * 0.1) %>%
+  mutate(views_group = '10% menores') %>%
+  group_by(views_group) %>%
+  summarise(media = mean(languages),
+            desvioPadrao = sd(languages),
+            mediana = median(languages),
+            IQR_vl = IQR(languages)) %>%
+  ungroup() %>%
+  arrange(desc(views_group))
 
+maiores_10 <- ted_maiorQuartil %>%
+  arrange(views) %>%
+  tail(count(ted_maiorQuartil) * 0.1) %>%
+  mutate(views_group = '10% maiores') %>%
+  group_by(views_group) %>%
+  summarise(media = mean(languages),
+            desvioPadrao = sd(languages),
+            mediana = median(languages),
+            IQR_vl = IQR(languages)) %>%
+  ungroup() %>%
+  arrange(desc(views_group))
+
+rbind(menores_10, maiores_10) %>% View()
 
 
 # Determine a quantidade de apresentações por evento cujo nome inicie com TED. Utilize a função str_detect para este filtro
+qtdApresentacoes <- ted_maiorQuartil %>%
+  filter(str_detect(event, "TED")) %>%
+  distinct(event)
 
-
+qtdApresentacoes %>%
+  mutate(contagem = n()) %>%
+  distinct(contagem) %>%
+  View()
 
 
 # Determine, por evento cujo nome inicie com TED e que a quantidade de visualizações dos vídeos foi maior que a mediana calculada anteriormente.
 #   * a quantidade de apresentações resultante do filtro, por evento
+ted_maiorQuartil %>%
+  filter(str_detect(event, "TED") & views > mediana) %>%
+  count(event) %>%
+  filter(n() > 10) %>%
+  View()
+
 #   * o ano do evento (utilizar o menor ano da data de publicação)
+ted_maiorQuartil %>%
+  filter(str_detect(event, "TED") & views > mediana) %>%
+  group_by(event) %>%
+  summarise(menorAnoPublicacao = min(year(published_date)), qtd = n()) %>%
+  ungroup() %>%
+  filter(qtd > 10) %>%
+  View()
+
 #   * a quantidade média de línguas das apresentações
+ted_maiorQuartil %>%
+  filter(str_detect(event, "TED") & views > views_mean) %>%
+  summarise(mediaLinguas = mean(languages))
+
 #   * o desvio padrão da quantidade de línguas
+ted_maiorQuartil %>%
+  filter(str_detect(event, "TED") & views > views_mean) %>%
+  summarise(desvioPadraoLinguas = sd(languages))
+
 #   * o coeficiente de variação da quantidade de línguas
+ted_maiorQuartil  %>%
+  filter(str_detect(event, "TED") & views > views_mean) %>%
+  summarise(coeficienteVariacao = sd(languages) / mean(languages))
+
 ### EXIBA SOMENTE OS EVENTOS COM MAIS DE 10 APRESENTAÇÕES
 
 
