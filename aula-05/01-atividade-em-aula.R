@@ -275,9 +275,12 @@ ted_maior10Apresentacoes %>%
 
 ted %>%
   group_by(ano_filme = year(film_date)) %>%
-  summarise(media_duracao = median(duration)) -> ted_media
+  summarise(media_duracao = median(duration)) -> ted_media %>% View()
 
 cor(ted_media$ano_filme, ted_media$media_duracao)
+
+# O valor da correlação fica em 0.49, o que é fraco, porém, ao analisar os dados, 
+# parece que ao passar do tempo a duração diminui  
 
 
 
