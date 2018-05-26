@@ -214,27 +214,70 @@ ted_maiorQuartil  %>%
   summarise(coeficienteVariacao = sd(languages) / mean(languages))
 
 ### EXIBA SOMENTE OS EVENTOS COM MAIS DE 10 APRESENTAÇÕES
-
-
-
+ted_maiorQuartil %>%
+  filter(cont_apresentacoes > 10) -> ted_maior10Apresentacoes
 
 # Calcule e classifique as seguintes correlações
 #     * Quantidade de visualizações e Quantidade de línguas
-#     * Quantidade de visualizações e Duração
-#     * Quantidade de visualizações e Quantidade de Comentários
-#     * Quantidade de Comentários e Quantidade de línguas
+ted_maior10Apresentacoes %>%
+  summarise(correlacao = cor(views, languages)) %>%
+  mutate(case_when(
+    abs(correlacao) >= 0.9 ~ "MUITO FORTE",
+    abs(correlacao) >= 0.7 ~ "FORTE",
+    abs(correlacao) >= 0.5 ~ "MODERADO",
+    abs(correlacao) >= 0.3 ~ "FRACO",
+    abs(correlacao) >= 0.0 ~ "DESPREZÍVEL"
+  ))
 
+#     * Quantidade de visualizações e Duração
+ted_maior10Apresentacoes %>%
+  summarise(correlacao = cor(views, duration)) %>%
+  mutate(case_when(
+    abs(correlacao) >= 0.9 ~ "MUITO FORTE",
+    abs(correlacao) >= 0.7 ~ "FORTE",
+    abs(correlacao) >= 0.5 ~ "MODERADO",
+    abs(correlacao) >= 0.3 ~ "FRACO",
+    abs(correlacao) >= 0.0 ~ "DESPREZÍVEL"
+  ))
+
+#     * Quantidade de visualizações e Quantidade de Comentários
+ted_maior10Apresentacoes %>%
+  summarise(correlacao = cor(views, comments)) %>%
+  mutate(case_when(
+    abs(correlacao) >= 0.9 ~ "MUITO FORTE",
+    abs(correlacao) >= 0.7 ~ "FORTE",
+    abs(correlacao) >= 0.5 ~ "MODERADO",
+    abs(correlacao) >= 0.3 ~ "FRACO",
+    abs(correlacao) >= 0.0 ~ "DESPREZÍVEL"
+  ))
+
+#     * Quantidade de Comentários e Quantidade de línguas
+ted_maior10Apresentacoes %>%
+  summarise(correlacao = cor(comments, languages)) %>%
+  mutate(case_when(
+    abs(correlacao) >= 0.9 ~ "MUITO FORTE",
+    abs(correlacao) >= 0.7 ~ "FORTE",
+    abs(correlacao) >= 0.5 ~ "MODERADO",
+    abs(correlacao) >= 0.3 ~ "FRACO",
+    abs(correlacao) >= 0.0 ~ "DESPREZÍVEL"
+  ))
 
 
 
 # Descarte os vídeos cuja duração seja maior que 3 desvios padrões da média. Calcule novamente as 5 correlações solicitadas
 
-
+ted_maior10Apresentacoes %>%
+  filter(duration < tresDesvios) -> ted_menor3desvioes
 
 
 # Utilizando o data frame original, crie um dataframe com a mediana da duração dos vídeos por ano de filmagem. Calcule a correlação entre o ano e a mediana da duração
 # e interprete o resultado
 
+ted %>%
+  group_by(ano_filme = year(film_date)) %>%
+  summarise(media_duracao = median(duration)) -> ted_media
+
+cor(ted_media$ano_filme, ted_media$media_duracao)
 
 
 
