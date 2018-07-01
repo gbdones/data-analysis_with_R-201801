@@ -1,3 +1,5 @@
+# Componentes: Guaracy Dias, Guilherme Vivian e Lucas Garmendia
+
 # Descrição dos dados: https://tech.instacart.com/3-million-instacart-orders-open-sourced-d40d29ead6f2
 # Estamos trabalhando com somente uma amostra do total de pedidos. O dataset abaixo não possui 3 milhões de pedidos ;)
 library( tidyverse )
@@ -181,7 +183,7 @@ df_all %>%
     group_by(user_id) %>%
     summarise(avg_time_orders = mean(days_since_prior_order)) %>%
     ungroup() %>%
-    arrange(user_id) %>% View()
+    arrange(user_id)
 
 
 #14 # Faça um gráfico de barras com a quantidade de usuários em cada tempo médio calculado
@@ -217,69 +219,83 @@ df_all %>%
 
 #17 # O vetor abaixo lista todos os IDs de bananas maduras em seu estado natural.
 # Utilizando este vetor, identifique se existem pedidos com mais de um tipo de banana no mesmo pedido.
-bananas <- c(24852, 13176, 39276, 37067, 29259)
-teste <- c(22035,49302, 1)
 
-df_all %>% 
-    filter(product_id %in% teste) %>% 
-    group_by(order_id) %>% 
-    mutate(qtd_orders = n()) %>%
-    filter(qtd_orders > 1)
+bananas <- c(13176, 24852, 29259, 37067, 39276)
 
-products %>%
-    inner_join(aisles, by = "aisle_id") %>%
-    inner_join(departments, by = "department_id") %>%
-    inner_join(insta_products, by = "product_id") %>%
-    inner_join(insta_orders, by = "order_id") %>%
-    select(
-        product_id,
-        product_name,
-        aisle_id,
-        aisle,
-        department_id,
-        department,
-        order_id,
-        user_id,
-        order_number,
-        order_dow,
-        order_hour_of_day,
-        days_since_prior_order) -> df_all2
+#df_all %>% filter(product_id %in% bananas)
 
-df_all2 %>% 
-    filter(product_id %in% bananas) %>% 
-    group_by(order_id) %>% 
-    mutate(qtd_orders = n()) %>%
-    filter(qtd_orders > 1) %>% 
-    arrange(order_id)
+# Não existiram bananas no df_all (atividade 6), utilizou-se, então, o vetor original.
 
+insta_products %>%
+    filter(product_id %in% bananas) %>%
+    group_by(order_id) %>%
+    summarise(qty = n()) %>%
+    ungroup() %>%
+    filter(qty > 1) %>%
+    pull(order_id) -> orders_bananas
 
 #18 # Se existirem, pedidos resultantes da atividade 17, conte quantas vezes cada tipo de banana aparece nestes pedidos com mais de um tipo de banana.
 # Após exibir os tipos de banana, crie um novo vetor de id de bananas contendo somente os 3 produtos de maior contagem de ocorrências
-df_all2 %>% 
-    filter(product_id %in% bananas) %>% 
-    group_by(order_id) %>% 
-    mutate(qtd_orders = n()) %>%
-    filter(qtd_orders > 1) %>% 
+
+insta_products %>%
+    filter(product_id %in% bananas & order_id %in% orders_bananas) %>%
+    distinct(order_id, product_id) %>%
     group_by(product_id) %>%
-    mutate(qtd_bananas = n()) %>%
-    distinct(product_id, qtd_bananas) %>%
-    arrange(qtd_bananas) %>% 
-    distinct (product_id) %>%
-    tail(3) -> top_3_bananas
+    summarise(qty = n()) %>%
+    arrange(desc(qty)) %>%
+    head(3) %>%
+    pull(product_id) -> bananas_top_3
 
-#19 # Com base no vetor criado na atividade 18, conte quantos pedidos de, em média, são feitos por hora em cada dia da semana. 
-df_all2 %>% 
-    
+#19 # Com base no vetor criado na atividade 18, conte quantos pedidos de, em média, são feitos por hora em cada dia da semana.
 
+products %>%
+    filter(product_id %in% bananas_top_3) %>%
+    inner_join(insta_products, by = "product_id") %>%
+    inner_join(insta_orders, by = "order_id") %>%
+    distinct(order_dow, order_hour_of_day, order_id) %>%
+    mutate(qty = 1) %>%
+    group_by(order_dow, order_hour_of_day) %>%
+    summarise(orders_mean = mean(sum(qty))) %>%
+    ungroup()
 
 #20 # Faça um gráfico dos pedidos de banana da atividade 19. O gráfico deve ter o dia da semana no eixo X, a hora do dia no eixo Y, 
 # e pontos na intersecção dos eixos, onde o tamanho do ponto é determinado pela quantidade média de pedidos de banana 
 # nesta combinação de dia da semana com hora
 
-
+products %>%
+    filter(product_id %in% bananas_top_3) %>%
+    inner_join(insta_products, by = "product_id") %>%
+    inner_join(insta_orders, by = "order_id") %>%
+    distinct(order_dow, order_hour_of_day, order_id) %>%
+    ggplot(aes(x = order_dow, y = order_hour_of_day, color = ..n..)) +
+    geom_count()
 
 #21 # Faça um histograma da quantidade média calculada na atividade 19, facetado por dia da semana
 
-
+products %>%
+    filter(product_id %in% bananas_top_3) %>%
+    inner_join(insta_products, by = "product_id") %>%
+    inner_join(insta_orders, by = "order_id") %>%
+    distinct(order_dow, order_hour_of_day, order_id) %>%
+    mutate(qty = 1) %>%
+    group_by(order_dow, order_hour_of_day) %>%
+    summarise(orders_mean = mean(sum(qty))) %>%
+    ungroup() %>%
+    ggplot(aes(x = orders_mean)) +
+    scale_x_continuous(breaks = seq(from = 0, to = 850, by = 50)) +
+    scale_y_continuous(breaks = seq(from = 0, to = 20, by = 1)) +
+    geom_histogram(breaks = seq(from = 0, to = 850, by = 5)) +
+    facet_wrap(~order_dow, ncol = 2)
 
 #22 # Teste se há diferença nas vendas por hora entre os dias 3 e 4 usando o teste de wilcoxon e utilizando a simulação da aula de testes
+
+insta_orders %>%
+    filter(order_dow %in% c(3, 4)) %>%
+    mutate(qty = 1) %>%
+    group_by(order_dow, order_hour_of_day) %>%
+    summarise(total = sum(qty)) -> insta_orders_wilcoxon
+
+wilcox.test(
+    total ~ order_dow,
+    data = insta_orders_wilcoxon
+)
